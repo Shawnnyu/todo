@@ -45,4 +45,31 @@ nav {
 
 .tasks-display {
   background-color: var(--tasks-display-color);
+  padding: 100px;
+}
+
+dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(10px);
+}
+
+/*temp*/
+.task-container {
+  border: 2px solid black;
+  width: 700px;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
