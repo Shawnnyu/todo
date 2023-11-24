@@ -7,16 +7,36 @@
 
 :root {
   font-family: "Roboto", sans-serif;
-  --sidebar-color: aquamarine;
-  --tasks-display-color: bisque;
+  --sidebar-color: rgb(209, 209, 209);
+  --main-display-color: rgb(241, 241, 241);
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-display-color);
+  height: 100vh;
+}
+
+.wrapper-out {
+  width: 70%;
+  min-height: 70vh;
   background-color: lightgray;
+  border: 30px solid white;
+  border-radius: 50px;
+  box-shadow: 0 0 16px 2px black;
+}
+
+.wrapper-in {
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 5fr;
-  grid-template-rows: 1fr 6fr;
-  min-height: 100vh;
+  grid-template-rows: 1fr 7fr;
+  border: 1px solid black;
+  border-radius: 20px;
 }
 
 header {
@@ -25,6 +45,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 20px 20px 0 0;
 }
 
 header h1 {
@@ -34,18 +55,39 @@ header h1 {
 
 .sidebar {
   background-color: var(--sidebar-color);
+  border-radius: 0 0 0 20px;
+}
+
+nav,
+.projects-container,
+.home-container,
+.project {
+  display: flex;
+  flex-direction: column;
+}
+
+nav,
+.projects-container,
+.home-container {
+  gap: 10px;
+}
+
+.current-project,
+.tasks-list {
+  margin-bottom: 20px;
+}
+.project {
+  gap: 5px;
 }
 
 nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   padding: 24px;
 }
 
-.tasks-display {
-  background-color: var(--tasks-display-color);
-  padding: 100px;
+.main-display {
+  background-color: var(--main-display-color);
+  padding: 24px 100px;
+  border-radius: 0 0 20px 0;
 }
 
 dialog {
@@ -57,6 +99,19 @@ dialog {
 
 dialog::backdrop {
   backdrop-filter: blur(10px);
+}
+
+.delete-btn {
+  background: url("./images/delete.svg");
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  margin-left: auto;
+}
+
+.delete-btn:hover {
+  filter: invert(67%) sepia(89%) saturate(7492%) hue-rotate(346deg) brightness(84%) contrast(146%);
 }
 
 /*temp*/
@@ -72,4 +127,8 @@ dialog::backdrop {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.completed {
+  background-color: rgb(173, 250, 173);
 }

@@ -9,50 +9,55 @@
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
   </head>
   <body>
-    <header><h1>To-do list</h1></header>
-    <div class="sidebar">
-      <nav>
-        <div class="home-container">
-          <h2>Home</h2>
-          <button class="nav-btn">Inbox</button>
-          <button class="nav-btn">Today</button>
-          <button class="nav-btn">Week</button>
-          <button class="nav-btn">Month</button>
+    <div class="wrapper-out">
+      <div class="wrapper-in">
+        <header><h1>To-do list</h1></header>
+        <div class="sidebar">
+          <nav>
+            <div class="home-container">
+              <h2>Home</h2>
+              <button id="inbox-btn" class="nav-btn">Inbox</button>
+              <button class="nav-btn">Today</button>
+              <button class="nav-btn">Week</button>
+              <button class="nav-btn">Month</button>
+            </div>
+            <div class="projects-container">
+              <h2>Projects</h2>
+              <button id="add-project-btn" class="nav-btn">Add Project</button>
+              <div class="project-form-container" style="display: none">
+                <form id="newProjectForm">
+                  <input type="text" id="new-project-title" name="new-project-title" autocomplete="off" placeholder="title" required />
+                  <button id="project-cancelBtn" type="button" value="cancel">Cancel</button>
+                  <button id="project-submitBtn" type="submit" value="default">Submit</button>
+                </form>
+              </div>
+            </div>
+          </nav>
         </div>
-        <div class="projects-container">
-          <h2>Projects</h2>
-          <button id="add-project-btn" class="nav-btn">Add Project</button>
-          <div class="project-form-container" style="display: none">
-            <form id="newProjectForm">
-              <input type="text" id="new-project-title" name="new-project-title" autocomplete="off" placeholder="title" />
-              <button id="submitBtn" type="submit" value="default">Submit</button>
-            </form>
-          </div>
+        <div class="main-display">
+          <div class="current-project"></div>
+          <div class="tasks-list"></div>
+          <button id="add-task-btn" style="display: none">Add Task</button>
         </div>
-      </nav>
+        <dialog id="taskDialog">
+          <p>New Task</p>
+          <form id="newTaskForm" method="dialog">
+            <div class="form-cell">
+              <label for="new-task-title">Title</label>
+              <input type="text" id="new-task-title" name="new-task-title" autocomplete="off" required />
+            </div>
+            <div class="form-cell">
+              <label for="new-description">description</label>
+              <input type="text" id="new-task-description" name="new-task-description" autocomplete="off" required />
+            </div>
+            <div class="buttons">
+              <button id="task-cancelBtn" type="button" value="cancel">Cancel</button>
+              <button id="task-submitBtn" type="submit" value="default">Submit</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
     </div>
-    <div class="tasks-display">
-      <div class="current-project"></div>
-      <div class="tasks-list"></div>
-      <button id="add-task-btn">Add Task</button>
-    </div>
-    <dialog id="taskDialog">
-      <p>New Task</p>
-      <form id="newTaskForm" method="dialog">
-        <div class="form-cell">
-          <label for="new-task-title">Title</label>
-          <input type="text" id="new-task-title" name="new-task-title" autocomplete="off" required />
-        </div>
-        <div class="form-cell">
-          <label for="new-description">description</label>
-          <input type="text" id="new-task-description" name="new-task-description" autocomplete="off" required />
-        </div>
-        <div class="buttons">
-          <button id="cancelBtn" type="button" value="cancel">Cancel</button>
-          <button id="submitBtn" type="submit" value="default">Submit</button>
-        </div>
-      </form>
-    </dialog>
     <script src="main.js"></script>
   </body>
 </html>

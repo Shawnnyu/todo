@@ -35,13 +35,23 @@ export default class Storage {
     return project;
   }
 
+  static getAllProjects() {
+    return Object.keys(localStorage);
+  }
+
   static deleteTaskFromProject(project, task) {
     project.removeTask(task);
     console.log(project.getTasks());
     localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
   }
 
-  static getAllProjects() {
-    return Object.keys(localStorage);
+  static setTaskCompletedTrue(project, task) {
+    task.setCompleted(true);
+    localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
+  }
+
+  static setTaskCompletedFalse(project, task) {
+    task.setCompleted(false);
+    localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
   }
 }
