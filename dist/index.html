@@ -17,9 +17,9 @@
             <div class="home-container">
               <h2>Home</h2>
               <button id="inbox-btn" class="nav-btn">Inbox</button>
-              <button class="nav-btn">Today</button>
-              <button class="nav-btn">Week</button>
-              <button class="nav-btn">Month</button>
+              <button id="today-btn" class="nav-btn">Today</button>
+              <button id="week-btn" class="nav-btn">Week</button>
+              <button id="month-btn" class="nav-btn">Month</button>
             </div>
             <div class="projects-container">
               <h2>Projects</h2>
@@ -48,7 +48,11 @@
             </div>
             <div class="form-cell">
               <label for="new-description">description</label>
-              <input type="text" id="new-task-description" name="new-task-description" autocomplete="off" required />
+              <input type="text" id="new-task-description" name="new-task-description" autocomplete="off" />
+            </div>
+            <div class="form-cell">
+              <label for="new-due-date">Due Date (Default: today)</label>
+              <input type="date" id="new-due-date" name="new-due-date" autocomplete="off" />
             </div>
             <div class="buttons">
               <button id="task-cancelBtn" type="button" value="cancel">Cancel</button>

@@ -54,4 +54,13 @@ export default class Storage {
     task.setCompleted(false);
     localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
   }
+
+  static setDueDate(project, task, date) {
+    task.setDueDate(date);
+    localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
+  }
+
+  static deleteProject(project) {
+    localStorage.removeItem(project.title);
+  }
 }

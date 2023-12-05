@@ -21,7 +21,7 @@ body {
 }
 
 .wrapper-out {
-  width: 70%;
+  width: max(70%, 1000px);
   min-height: 70vh;
   background-color: lightgray;
   border: 30px solid white;
@@ -78,6 +78,8 @@ nav,
 }
 .project {
   gap: 5px;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5);
+  padding-bottom: 20px;
 }
 
 nav {
@@ -88,6 +90,8 @@ nav {
   background-color: var(--main-display-color);
   padding: 24px 100px;
   border-radius: 0 0 20px 0;
+  width: 100%;
+  overflow: auto;
 }
 
 dialog {
@@ -101,34 +105,76 @@ dialog::backdrop {
   backdrop-filter: blur(10px);
 }
 
-.delete-btn {
-  background: url("./images/delete.svg");
-  background-position: center;
-  width: 20px;
-  height: 20px;
-  border: none;
-  margin-left: auto;
-}
-
-.delete-btn:hover {
-  filter: invert(67%) sepia(89%) saturate(7492%) hue-rotate(346deg) brightness(84%) contrast(146%);
-}
-
-/*temp*/
-.task-container {
-  border: 2px solid black;
-  width: 700px;
-  padding: 8px;
-  display: flex;
-  gap: 10px;
-}
-
 .tasks-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-width: 100%;
 }
+
+.task-container {
+  border: 2px solid black;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.task-container > :nth-last-child(3),
+.task-container > :nth-last-child(4) {
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 30%;
+}
+
+.task-container > :nth-last-child(3) {
+  margin-right: auto;
+}
+
+.task-container > :nth-last-child(2),
+.task-container > :first-child {
+  flex-shrink: 0;
+}
+
+.task-container > :nth-last-child(2) {
+  margin-left: auto;
+}
+
+.delete-task-btn,
+.delete-project-btn {
+  background: url("./images/delete.svg");
+  background-position: center;
+  border: none;
+  background-size: cover;
+}
+
+.delete-task-btn {
+  width: 20px;
+  height: 20px;
+}
+
+.delete-project-btn {
+  width: 15px;
+  height: 15px;
+}
+
+.delete-task-btn:hover,
+.delete-project-btn:hover {
+  filter: invert(67%) sepia(89%) saturate(7492%) hue-rotate(346deg) brightness(84%) contrast(146%);
+}
+
+/*temp*/
 
 .completed {
   background-color: rgb(173, 250, 173);
+}
+
+::-webkit-scrollbar {
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: lightgray; /* Set the color of the scrollbar handle */
+  border-radius: 5px; /* Set the border radius of the handle */
 }

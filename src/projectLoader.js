@@ -1,0 +1,169 @@
+import { removeChildren, generateContent } from "./util";
+import FormHandler from "./formHandlers.js";
+import Storage from "./storage.js";
+import { isThisMonth, isThisWeek, isToday, toDate, parseISO } from "date-fns";
+import * as TaskLoader from "./taskLoader.js";
+import Task from "./task";
+
+const addTaskBtn = document.querySelector("#add-task-btn");
+const projectTitleDisplay = document.querySelector(".current-project");
+const projectFormContainer = document.querySelector(".project-form-container");
+const tasksList = document.querySelector(".tasks-list");
+const projectContainer = document.querySelector(".projects-container");
+
+export function getCurrentProject() {
+  const projectTitleDisplay = document.querySelector(".current-project").firstChild;
+  const projectTitle = projectTitleDisplay.innerHTML;
+  console.log(`title:  ${projectTitle}`);
+  return projectTitle;
+}
+
+function filterProjects(project, container, filter, isAgg) {
+  project.tasks.forEach((t) => {
+    if (filter(t)) {
+      container.appendChild(TaskLoader.loadTask(project, t, isAgg));
+    }
+  });
+}
+
+function filterNone(task) {
+  return task instanceof Task;
+}
+
+function filterToday(task) {
+  return isToday(toDate(parseISO(task.getDueDate())));
+}
+
+function filterMonth(task) {
+  return isThisMonth(toDate(parseISO(task.getDueDate())));
+}
+
+function filterWeek(task) {
+  return isThisWeek(toDate(parseISO(task.getDueDate())));
+}
+
+export function loadInbox() {
+  console.log("here");
+  loadToDoList(filterNone, true);
+}
+
+export function loadToday() {
+  loadToDoList(filterToday, true);
+}
+
+export function loadWeek() {
+  loadToDoList(filterWeek, true);
+}
+
+export function loadMonth() {
+  loadToDoList(filterMonth, true);
+}
+
+export function loadSideBarProjects() {
+  const allProjects = Storage.getAllProjects();
+  for (let i = 0; i < allProjects.length; i++) {
+    const cur = Storage.getProjectObject(allProjects[i]);
+    const container = createProjectButton(cur);
+    projectContainer.appendChild(container);
+  }
+}
+
+export function loadSidebarButtons() {
+  const addProjectBtn = document.querySelector("#add-project-btn");
+  addProjectBtn.addEventListener("click", showProjectForm);
+
+  const inboxBtn = document.querySelector("#inbox-btn");
+  inboxBtn.addEventListener("click", loadInbox);
+
+  const todayBtn = document.querySelector("#today-btn");
+  todayBtn.addEventListener("click", loadToday);
+
+  const weekBtn = document.querySelector("#week-btn");
+  weekBtn.addEventListener("click", loadWeek);
+
+  const monthBtn = document.querySelector("#month-btn");
+  monthBtn.addEventListener("click", loadMonth);
+}
+
+export function addProjectToSideBar(project) {
+  const projectContainer = document.querySelector(".projects-container");
+  const container = createProjectButton(project);
+  projectContainer.appendChild(container);
+}
+
+export function hideProjectForm() {
+  console.log("here");
+  projectFormContainer.style.display = "none";
+}
+
+export function loadProjectFromSidebar(project) {
+  addTaskBtn.style.display = "block";
+  if (addTaskBtn.getAttribute("listener") == true) {
+    addTaskBtn.removeEventListener("click");
+  }
+  if (projectTitleDisplay.hasChildNodes()) {
+    projectTitleDisplay.removeChild(projectTitleDisplay.children[0]);
+  }
+  projectTitleDisplay.appendChild(generateContent("h1", project.title));
+  removeChildren(tasksList);
+  filterProjects(project, tasksList, filterNone, false);
+
+  addTaskBtn.addEventListener("click", () => TaskLoader.showTaskDialog(project.title));
+}
+
+function showProjectForm() {
+  //const projectFormContainer = document.querySelector(".project-form-container");
+  projectFormContainer.style.display = "block";
+  const projectForm = document.querySelector("#newProjectForm");
+  projectForm.onsubmit = (e) => FormHandler.projectFormSubmit(e);
+  const cancelBtn = document.querySelector("#project-cancelBtn");
+  cancelBtn.onclick = () => {
+    projectFormContainer.style.display = "none";
+  };
+}
+
+function loadToDoList(filter, isAgg) {
+  addTaskBtn.style.display = "none";
+  if (projectTitleDisplay.hasChildNodes()) {
+    projectTitleDisplay.removeChild(projectTitleDisplay.children[0]);
+  }
+  removeChildren(tasksList);
+  projectTitleDisplay.appendChild(generateContent("h1", "Inbox"));
+  const allProjects = Storage.getAllProjects();
+  for (let i = 0; i < allProjects.length; i++) {
+    const projectTitle = allProjects[i];
+    const projectCell = document.createElement("div");
+    projectCell.classList.add("project");
+    projectCell.appendChild(generateContent("h3", projectTitle));
+    const curProject = Storage.getProjectObject(projectTitle);
+    filterProjects(curProject, projectCell, filter, isAgg);
+    tasksList.appendChild(projectCell);
+  }
+}
+
+function deleteProject(project, child, parent, projectTitle) {
+  Storage.deleteProject(project);
+  parent.removeChild(child);
+  if (projectTitle === "Inbox") {
+    loadInbox();
+  } else if (projectTitle == project.title) {
+    projectTitleDisplay.innerHTML = "";
+    removeChildren(tasksList);
+    addTaskBtn.style.display = "none";
+  }
+}
+
+function createProjectButton(project) {
+  const container = document.createElement("div");
+  const projectBtn = document.createElement("button");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete-project-btn");
+  projectBtn.innerText = project.title;
+  //fix below
+  projectBtn.onclick = () => loadProjectFromSidebar(project);
+  deleteBtn.onclick = () => deleteProject(project, container, projectContainer, getCurrentProject());
+  container.appendChild(projectBtn);
+  container.appendChild(deleteBtn);
+  //projectContainer.appendChild(container);
+  return container;
+}
