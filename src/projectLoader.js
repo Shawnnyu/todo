@@ -11,6 +11,13 @@ const projectFormContainer = document.querySelector(".project-form-container");
 const tasksList = document.querySelector(".tasks-list");
 const projectContainer = document.querySelector(".projects-container");
 
+const inboxBtn = document.querySelector("#inbox-btn");
+const addProjectBtn = document.querySelector("#add-project-btn");
+const todayBtn = document.querySelector("#today-btn");
+const weekBtn = document.querySelector("#week-btn");
+const monthBtn = document.querySelector("#month-btn");
+const [...homeBtns] = document.querySelectorAll(".home-nav-btn");
+
 export function getCurrentProject() {
   const projectTitleDisplay = document.querySelector(".current-project").firstChild;
   const projectTitle = projectTitleDisplay.innerHTML;
@@ -43,19 +50,26 @@ function filterWeek(task) {
 }
 
 export function loadInbox() {
-  console.log("here");
+  resetBtns();
+  inboxBtn.classList.add("active");
   loadToDoList(filterNone, true);
 }
 
 export function loadToday() {
+  resetBtns();
+  todayBtn.classList.add("active");
   loadToDoList(filterToday, true);
 }
 
 export function loadWeek() {
+  resetBtns();
+  weekBtn.classList.add("active");
   loadToDoList(filterWeek, true);
 }
 
 export function loadMonth() {
+  resetBtns();
+  monthBtn.classList.add("active");
   loadToDoList(filterMonth, true);
 }
 
@@ -69,19 +83,14 @@ export function loadSideBarProjects() {
 }
 
 export function loadSidebarButtons() {
-  const addProjectBtn = document.querySelector("#add-project-btn");
   addProjectBtn.addEventListener("click", showProjectForm);
 
-  const inboxBtn = document.querySelector("#inbox-btn");
   inboxBtn.addEventListener("click", loadInbox);
 
-  const todayBtn = document.querySelector("#today-btn");
   todayBtn.addEventListener("click", loadToday);
 
-  const weekBtn = document.querySelector("#week-btn");
   weekBtn.addEventListener("click", loadWeek);
 
-  const monthBtn = document.querySelector("#month-btn");
   monthBtn.addEventListener("click", loadMonth);
 }
 
@@ -96,7 +105,10 @@ export function hideProjectForm() {
   projectFormContainer.style.display = "none";
 }
 
-export function loadProjectFromSidebar(project) {
+export function loadProjectFromSidebar(project, button) {
+  //const button = button;
+  resetBtns();
+  button.classList.add("active");
   addTaskBtn.style.display = "block";
   if (addTaskBtn.getAttribute("listener") == true) {
     addTaskBtn.removeEventListener("click");
@@ -157,13 +169,32 @@ function createProjectButton(project) {
   const container = document.createElement("div");
   const projectBtn = document.createElement("button");
   const deleteBtn = document.createElement("button");
+
   deleteBtn.classList.add("delete-project-btn");
-  projectBtn.innerText = project.title;
+
+  const img = document.createElement("img");
+  img.src = "/dist/images/project.svg";
+  img.classList.add("project-icon");
+  projectBtn.appendChild(img);
+
+  const textNode = document.createTextNode(project.title);
+  projectBtn.appendChild(textNode);
+  projectBtn.classList.add("project-nav-btn");
+
   //fix below
-  projectBtn.onclick = () => loadProjectFromSidebar(project);
+  projectBtn.onclick = () => loadProjectFromSidebar(project, projectBtn);
   deleteBtn.onclick = () => deleteProject(project, container, projectContainer, getCurrentProject());
   container.appendChild(projectBtn);
   container.appendChild(deleteBtn);
+
+  container.classList.add("project-nav-container");
+
   //projectContainer.appendChild(container);
   return container;
+}
+
+function resetBtns(project) {
+  const [...projectBtns] = document.querySelectorAll(".project-nav-btn");
+  homeBtns.forEach((btn) => btn.classList.remove("active"));
+  projectBtns.forEach((btn) => btn.classList.remove("active"));
 }
