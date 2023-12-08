@@ -10,6 +10,8 @@
 
 ## Live Demo
 
+- [Demo](https://shawnnyu.github.io/todo/)
+
 ## My Projects
 
 - [Portfolio](https://shawnnyu.github.io/portfolio/)
