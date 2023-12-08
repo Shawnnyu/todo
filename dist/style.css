@@ -9,6 +9,9 @@
   font-family: "Roboto", sans-serif;
   --sidebar-color: rgb(209, 209, 209);
   --main-display-color: rgb(241, 241, 241);
+  --btn-hover-color: rgba(121, 121, 121, 0.39);
+  --sidebar-padding: 24px;
+  --sidebar-margin: -24px;
 }
 
 body {
@@ -23,6 +26,7 @@ body {
 .wrapper-out {
   width: max(70%, 1000px);
   min-height: 70vh;
+  max-height: 70vh;
   background-color: lightgray;
   border: 30px solid white;
   border-radius: 50px;
@@ -37,6 +41,8 @@ body {
   grid-template-rows: 1fr 7fr;
   border: 1px solid black;
   border-radius: 20px;
+
+  overflow: hidden;
 }
 
 header {
@@ -56,10 +62,14 @@ header h1 {
 .sidebar {
   background-color: var(--sidebar-color);
   border-radius: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 nav,
 .projects-container,
+.projects,
 .home-container,
 .project {
   display: flex;
@@ -72,18 +82,81 @@ nav,
   gap: 10px;
 }
 
+.home-container {
+  margin-bottom: 20px;
+}
+
+.home-icon,
+.project-icon {
+  height: 20px;
+  width: 20px;
+}
+
+.projects {
+  margin-left: var(--sidebar-margin);
+  padding-left: var(--sidebar-padding);
+}
+
+.home-nav-btn,
+.project-nav-btn {
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-left: var(--sidebar-margin);
+  padding: 4px 0 4px 24px;
+  font-size: 1.2rem;
+  border-radius: 0 16px 16px 0;
+  background-color: rgba(0, 0, 0, 0);
+  gap: 10px;
+}
+
+.home-nav-btn:hover,
+.project-nav-btn:hover,
+.form-btn:hover,
+#add-task-btn:hover {
+  background-color: var(--btn-hover-color);
+}
+
+.active {
+  background-color: var(--btn-hover-color);
+}
+
+nav {
+  max-height: 95%;
+  padding: var(--sidebar-padding);
+  overflow: hidden;
+}
+
+.projects-container {
+  max-height: 90%;
+}
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  max-height: 67%;
+  overflow-y: auto;
+}
+
+.project-nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.project-nav-btn {
+  flex: 1;
+}
+
 .current-project,
 .tasks-list {
   margin-bottom: 20px;
 }
+
 .project {
   gap: 5px;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5);
   padding-bottom: 20px;
-}
-
-nav {
-  padding: 24px;
 }
 
 .main-display {
@@ -91,7 +164,7 @@ nav {
   padding: 24px 100px;
   border-radius: 0 0 20px 0;
   width: 100%;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 dialog {
@@ -99,10 +172,17 @@ dialog {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 40px;
+  border-radius: 24px;
 }
 
 dialog::backdrop {
   backdrop-filter: blur(10px);
+}
+
+dialog > p {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
 }
 
 .tasks-list {
@@ -116,6 +196,7 @@ dialog::backdrop {
   border: 2px solid black;
   padding: 8px;
   display: flex;
+  align-items: center;
   gap: 10px;
   border-radius: 8px;
   background-color: white;
@@ -155,13 +236,40 @@ dialog::backdrop {
 }
 
 .delete-project-btn {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
 }
 
 .delete-task-btn:hover,
 .delete-project-btn:hover {
   filter: invert(67%) sepia(89%) saturate(7492%) hue-rotate(346deg) brightness(84%) contrast(146%);
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 2px;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.2rem;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 4px solid black;
+}
+
+#new-project-title,
+#new-due-date {
+  margin-bottom: 8px;
+}
+
+.form-btn,
+#add-task-btn {
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  border: 1px solid black;
 }
 
 /*temp*/
@@ -175,6 +283,11 @@ dialog::backdrop {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: lightgray; /* Set the color of the scrollbar handle */
-  border-radius: 5px; /* Set the border radius of the handle */
+  background-color: rgb(148, 148, 148);
+  border-radius: 5px;
+}
+
+.projects::-webkit-scrollbar {
+  width: 10px;
+  max-height: 50%;
 }

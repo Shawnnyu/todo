@@ -9,7 +9,7 @@ const addTaskBtn = document.querySelector("#add-task-btn");
 const projectTitleDisplay = document.querySelector(".current-project");
 const projectFormContainer = document.querySelector(".project-form-container");
 const tasksList = document.querySelector(".tasks-list");
-const projectContainer = document.querySelector(".projects-container");
+const projectContainer = document.querySelector(".projects");
 
 const inboxBtn = document.querySelector("#inbox-btn");
 const addProjectBtn = document.querySelector("#add-project-btn");
@@ -21,11 +21,12 @@ const [...homeBtns] = document.querySelectorAll(".home-nav-btn");
 export function getCurrentProject() {
   const projectTitleDisplay = document.querySelector(".current-project").firstChild;
   const projectTitle = projectTitleDisplay.innerHTML;
-  console.log(`title:  ${projectTitle}`);
   return projectTitle;
 }
 
 function filterProjects(project, container, filter, isAgg) {
+  //need to make a call to storage in case project gets updated
+  project = Storage.getProjectObject(project.title);
   project.tasks.forEach((t) => {
     if (filter(t)) {
       container.appendChild(TaskLoader.loadTask(project, t, isAgg));
@@ -73,6 +74,7 @@ export function loadMonth() {
   loadToDoList(filterMonth, true);
 }
 
+//called once on initial load
 export function loadSideBarProjects() {
   const allProjects = Storage.getAllProjects();
   for (let i = 0; i < allProjects.length; i++) {
@@ -84,31 +86,28 @@ export function loadSideBarProjects() {
 
 export function loadSidebarButtons() {
   addProjectBtn.addEventListener("click", showProjectForm);
-
   inboxBtn.addEventListener("click", loadInbox);
-
   todayBtn.addEventListener("click", loadToday);
-
   weekBtn.addEventListener("click", loadWeek);
-
   monthBtn.addEventListener("click", loadMonth);
 }
 
 export function addProjectToSideBar(project) {
-  const projectContainer = document.querySelector(".projects-container");
+  const projectContainer = document.querySelector(".projects");
   const container = createProjectButton(project);
   projectContainer.appendChild(container);
 }
 
 export function hideProjectForm() {
-  console.log("here");
   projectFormContainer.style.display = "none";
 }
 
 export function loadProjectFromSidebar(project, button) {
-  //const button = button;
-  resetBtns();
-  button.classList.add("active");
+  if (button !== undefined) {
+    resetBtns();
+    button.classList.add("active");
+  }
+
   addTaskBtn.style.display = "block";
   if (addTaskBtn.getAttribute("listener") == true) {
     addTaskBtn.removeEventListener("click");
@@ -124,7 +123,6 @@ export function loadProjectFromSidebar(project, button) {
 }
 
 function showProjectForm() {
-  //const projectFormContainer = document.querySelector(".project-form-container");
   projectFormContainer.style.display = "block";
   const projectForm = document.querySelector("#newProjectForm");
   projectForm.onsubmit = (e) => FormHandler.projectFormSubmit(e);
@@ -181,19 +179,17 @@ function createProjectButton(project) {
   projectBtn.appendChild(textNode);
   projectBtn.classList.add("project-nav-btn");
 
-  //fix below
   projectBtn.onclick = () => loadProjectFromSidebar(project, projectBtn);
   deleteBtn.onclick = () => deleteProject(project, container, projectContainer, getCurrentProject());
   container.appendChild(projectBtn);
   container.appendChild(deleteBtn);
 
   container.classList.add("project-nav-container");
-
-  //projectContainer.appendChild(container);
   return container;
 }
 
-function resetBtns(project) {
+//un-highlights all the buttons
+function resetBtns() {
   const [...projectBtns] = document.querySelectorAll(".project-nav-btn");
   homeBtns.forEach((btn) => btn.classList.remove("active"));
   projectBtns.forEach((btn) => btn.classList.remove("active"));

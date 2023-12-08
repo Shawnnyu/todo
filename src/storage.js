@@ -11,23 +11,15 @@ export default class Storage {
     localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
   }
 
-  //temp
-  static getProject(title) {
-    return localStorage.getItem(title);
-  }
-
   static getProjectObject(title) {
-    //console.log(`in getProjectObject ${title}`);
     const project = new Project(title);
     const storedTasks = JSON.parse(localStorage.getItem(title));
     for (let i = 0; i < storedTasks.length; i++) {
-      //console.log(storedTasks[i]["title"]);
       const task = new Task(
         storedTasks[i]["title"],
         storedTasks[i]["description"],
         storedTasks[i]["createdDate"],
         storedTasks[i]["dueDate"],
-        storedTasks[i]["priority"],
         storedTasks[i]["completed"]
       );
       project.addTask(task);
@@ -41,7 +33,6 @@ export default class Storage {
 
   static deleteTaskFromProject(project, task) {
     project.removeTask(task);
-    console.log(project.getTasks());
     localStorage.setItem(project.title, JSON.stringify(project.getTasks()));
   }
 

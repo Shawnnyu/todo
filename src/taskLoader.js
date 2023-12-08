@@ -1,11 +1,7 @@
-import { removeChildren, generateContent } from "./util";
+import { generateContent } from "./util";
 import FormHandler from "./formHandlers.js";
 import Storage from "./storage.js";
-import * as ProjectLoader from "./projectLoader.js";
-
-const addTaskBtn = document.querySelector("#add-task-btn");
-const projectTitleDisplay = document.querySelector(".current-project");
-const tasksList = document.querySelector(".tasks-list");
+import * as ProjectPage from "./projectLoader";
 
 export function loadTask(project, t, isAgg) {
   const task = document.createElement("div");
@@ -13,6 +9,8 @@ export function loadTask(project, t, isAgg) {
 
   const completed = document.createElement("input");
   completed.type = "checkbox";
+  completed.setAttribute("name", "isCompleted");
+  completed.setAttribute("title", "Mark complete");
   if (t.completed) {
     completed.checked = true;
     task.classList.add("completed");
@@ -35,26 +33,23 @@ export function loadTask(project, t, isAgg) {
   const titleContainer = document.createElement("div");
   titleContainer.appendChild(generateContent("strong", `${t.title} - `));
   task.appendChild(titleContainer);
-  //task.appendChild(generateContent("p", t.title));
+
   const descriptionContainer = document.createElement("div");
   descriptionContainer.appendChild(generateContent("p", t.description));
   task.appendChild(descriptionContainer);
-  //task.appendChild(generateContent("p", t.description));
-  //task.appendChild(generateContent("p", t.createdDate));
+
   const dueDateContainer = document.createElement("div");
   dueDateContainer.appendChild(generateContent("strong", "Due: "));
-  //task.appendChild(generateContent("strong", "Due:"));
   const dateInput = document.createElement("input");
   dateInput.type = "date";
   dateInput.value = t.dueDate;
   dateInput.addEventListener("input", () => Storage.setDueDate(project, t, dateInput.value));
   dueDateContainer.appendChild(dateInput);
   task.appendChild(dueDateContainer);
-  const deleteBtn = document.createElement("button");
-  //deleteBtn.innerText = "X";
-  deleteBtn.classList.add("delete-task-btn");
-  deleteBtn.onclick = () => FormHandler.removeTask(project, t, isAgg);
 
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete-task-btn");
+  deleteBtn.onclick = () => removeTask(project, t, isAgg);
   task.appendChild(deleteBtn);
 
   return task;
@@ -74,4 +69,13 @@ export function showTaskDialog() {
   taskDialog.addEventListener("close", () => {
     FormHandler.taskFormClose();
   });
+}
+
+function removeTask(project, task, isAgg) {
+  Storage.deleteTaskFromProject(project, task);
+  if (isAgg) {
+    ProjectPage.loadInbox();
+  } else {
+    ProjectPage.loadProjectFromSidebar(project);
+  }
 }

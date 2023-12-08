@@ -1,12 +1,9 @@
-import { format } from "date-fns";
-
 export default class Task {
-  constructor(title, description, createdDate, dueDate, priority, completed) {
+  constructor(title, description, createdDate, dueDate, completed) {
     this.title = title;
     this.description = description;
     this.createdDate = createdDate;
     this.dueDate = dueDate;
-    this.priority = priority;
     this.completed = completed;
   }
 
@@ -36,14 +33,6 @@ export default class Task {
 
   setDueDate(dueDate) {
     this.dueDate = dueDate;
-  }
-
-  getPriority() {
-    return this.priority;
-  }
-
-  setPriority(priority) {
-    this.priority = priority;
   }
 
   getCompleted() {
