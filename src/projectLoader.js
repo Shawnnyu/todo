@@ -4,6 +4,7 @@ import Storage from "./storage.js";
 import { isThisMonth, isThisWeek, isToday, toDate, parseISO } from "date-fns";
 import * as TaskLoader from "./taskLoader.js";
 import Task from "./task";
+import projectIcon from "/dist/images/project.svg";
 
 const addTaskBtn = document.querySelector("#add-task-btn");
 const projectTitleDisplay = document.querySelector(".current-project");
@@ -171,7 +172,7 @@ function createProjectButton(project) {
   deleteBtn.classList.add("delete-project-btn");
 
   const img = document.createElement("img");
-  img.src = "./dist/images/project.svg";
+  img.src = projectIcon;
   img.classList.add("project-icon");
   projectBtn.appendChild(img);
 
