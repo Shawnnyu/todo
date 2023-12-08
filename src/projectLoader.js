@@ -171,7 +171,7 @@ function createProjectButton(project) {
   deleteBtn.classList.add("delete-project-btn");
 
   const img = document.createElement("img");
-  img.src = "/dist/images/project.svg";
+  img.src = "./dist/images/project.svg";
   img.classList.add("project-icon");
   projectBtn.appendChild(img);
 
