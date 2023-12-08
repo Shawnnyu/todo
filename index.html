@@ -24,12 +24,15 @@
             <div class="projects-container">
               <h2>Projects</h2>
               <button id="add-project-btn" class="home-nav-btn"><img class="home-icon" src="./images/add.svg" alt="SVG Icon" />Add Project</button>
-              <div class="project-form-container" style="display: none">
-                <form id="newProjectForm">
-                  <input type="text" id="new-project-title" name="new-project-title" autocomplete="off" placeholder="title" required />
-                  <button id="project-cancelBtn" type="button" value="cancel">Cancel</button>
-                  <button id="project-submitBtn" type="submit" value="default">Submit</button>
-                </form>
+
+              <div class="projects">
+                <div class="project-form-container" style="display: none">
+                  <form id="newProjectForm">
+                    <input type="text" id="new-project-title" name="new-project-title" autocomplete="off" placeholder="Title" required />
+                    <button class="form-btn" id="project-cancelBtn" type="button" value="cancel">Cancel</button>
+                    <button class="form-btn" id="project-submitBtn" type="submit" value="default">Submit</button>
+                  </form>
+                </div>
               </div>
             </div>
           </nav>
@@ -43,20 +46,20 @@
           <p>New Task</p>
           <form id="newTaskForm" method="dialog">
             <div class="form-cell">
-              <label for="new-task-title">Title</label>
+              <label for="new-task-title">Title:</label>
               <input type="text" id="new-task-title" name="new-task-title" autocomplete="off" required />
             </div>
             <div class="form-cell">
-              <label for="new-description">description</label>
+              <label for="new-task-description">Description:</label>
               <input type="text" id="new-task-description" name="new-task-description" autocomplete="off" />
             </div>
             <div class="form-cell">
-              <label for="new-due-date">Due Date (Default: today)</label>
+              <label for="new-due-date">Due Date (Default: today):</label>
               <input type="date" id="new-due-date" name="new-due-date" autocomplete="off" />
             </div>
             <div class="buttons">
-              <button id="task-cancelBtn" type="button" value="cancel">Cancel</button>
-              <button id="task-submitBtn" type="submit" value="default">Submit</button>
+              <button class="form-btn" id="task-cancelBtn" type="button" value="cancel">Cancel</button>
+              <button class="form-btn" id="task-submitBtn" type="submit" value="default">Submit</button>
             </div>
           </form>
         </dialog>
